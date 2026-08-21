@@ -19,13 +19,13 @@ jobs:
           outputs: |
             dist/github-contribution-grid-snake.svg
             dist/github-contribution-grid-snake-dark.svg?palette=github-dark
-      - uses: actions/checkout@v4
-        with:
-          ref: output
-          clean: false
-      - run: |
+
+      - name: Push to output branch
+        run: |
+          cd dist
+          git init
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add -A
-          git commit -m "snake animation" || echo "no changes"
-          git push
+          git commit -m "snake animation"
+          git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:output
